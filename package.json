@@ -2,7 +2,7 @@
   "name": "back_end_pthree",
   "version": "1.0.0",
   "engines": {
-    "node":"18.14.0"
+    "node": "18.14.0"
   },
   "description": "",
   "main": "server.js",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/AlexParis31/back_end_pthree#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.3"
