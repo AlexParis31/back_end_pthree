@@ -1,0 +1,6 @@
+ image: String,
+    year: Number,
+    make: String,
+    model: String,
+    class: String,
+    price: Number

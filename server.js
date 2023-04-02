@@ -1,46 +1,46 @@
-//___________________
-//Dependencies
-//___________________
 const express = require('express');
-const mongoose = require ('mongoose');
-const app = express ();
-const db = mongoose.connection;
-require('dotenv').config()
-//___________________
-//Port
-//___________________
-// Allow use of Heroku's port or your own local port, depending on the environment
-const PORT = process.env.PORT
-//___________________
-//Database
-//___________________
-// How to connect to the database either via heroku or locally
-const MONGODB_URI = process.env.MONGODB_URI;
+const app = express();
+const mongoose = require('mongoose')
+const Cars = require('./models/cars.js')
+const cors = require('cors')
 
-// Connect to Mongo &
-// Fix Depreciation Warnings from Mongoose
-// May or may not need these depending on your Mongoose version
-mongoose.connect(MONGODB_URI)
+app.use(express.json());
+app.use(cors())
 
-//___________________
-//Middleware
-//___________________
-
-//use public folder for static assets
-app.use(express.static('public'));
-
-// populates req.body with parsed info from forms - if no data from forms will return an empty object {}
-app.use(express.urlencoded({ extended: false }));// extended: false - does not allow nested objects in query strings
-app.use(express.json());// returns middleware that only parses JSON - may or may not need it depending on your project
-//___________________
-// Routes
-//___________________
-//localhost:3000
-app.get('/' , (req, res) => {
-  res.send('Hello World!');
+app.post('/cars', (req, res)=>{
+    Cars.create(req.body)
+    .then((createdVehicle)=>{
+        res.json(createdVehicle)
+    })
 });
 
-//___________________
-//Listener
-//___________________
+app.get('/cars', (req, res)=>{
+    Cars.find({})
+    .then((foundVehicle) => {
+        res.json(foundVehicle)
+    })
+});
+
+app.delete('/cars/:id', (req, res)=>{
+    Cars.findByIdAndRemove(req.params.id)
+    .then((deletedVehicle)=> {
+        res.json(deletedVehicle)
+    })
+});
+
+app.put('/cars/:id', (req, res)=>{
+    Cars.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then((updatedVehicle)=>res.json(updatedVehicle))
+});
+
+
+
+
+
 app.listen(PORT, () => console.log( 'Listening on port:', PORT));
+
+mongoose.connect('mongodb://localhost:27017/carcrud')
+mongoose.connection.once('open', ()=>{
+    console.log('connected to mongod...');
+});
+
