@@ -7,7 +7,7 @@ const carSchema = new mongoose.Schema({
     make: String,
     model: String,
     class: String,
-    price: Number
+    price: String,
 });
 
 
