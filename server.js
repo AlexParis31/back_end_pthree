@@ -18,21 +18,21 @@ app.post('/cars', (req, res)=>{
     })
 });
 
-app.get('/', (req, res)=>{
+app.get('/cars', (req, res)=>{
     Cars.find({})
     .then((foundVehicle) => {
         res.json(foundVehicle)
     })
 });
 
-app.delete('/:id', (req, res)=>{
+app.delete('/cars/:id', (req, res)=>{
     Cars.findByIdAndRemove(req.params.id)
     .then((deletedVehicle)=> {
         res.json(deletedVehicle)
     })
 });
 
-app.put('/:id', (req, res)=>{
+app.put('/cars/:id', (req, res)=>{
     Cars.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then((updatedVehicle)=>res.json(updatedVehicle))
 });
