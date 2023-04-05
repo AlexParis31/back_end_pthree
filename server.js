@@ -1,10 +1,14 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const Cars = require('./models/cars.js')
 const cors = require('cors')
+const db = mongoose.connection;
 
+app.use(express.static('public'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));// extended: false - does not allow nested objects in query strings
 app.use(cors())
 
 app.post('/cars', (req, res)=>{
@@ -34,13 +38,12 @@ app.put('/cars/:id', (req, res)=>{
 });
 
 
+const PORT = process.env.PORT
+const MONGODB_URI = process.env.MONGODB_URI;
 
-
-
-app.listen(3000, () => console.log( 'Listening on port:', 3000));
-
-mongoose.connect('mongodb://localhost:27017/carcrud')
+mongoose.connect(MONGODB_URI)
 mongoose.connection.once('open', ()=>{
     console.log('connected to mongod...');
 });
 
+app.listen(PORT, () => console.log( 'Listening on port:', PORT));
